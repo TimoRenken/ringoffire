@@ -3,7 +3,9 @@
     <div class="card_stack">
         <img *ngFor="let card of [0,1,2,3]; let i = index;" [ngStyle]="{'right.px': i * 5}"
             src="../../assets/img/cards/card_cover.png">
-        <img (click)="takeCard()" [class.pick_card]="pickCardAnimation" class="top_card" src="../../assets/img/cards/card_cover.png">
+        <img (click)="takeCard()" class="top_card" style="right: 25px" src="../../assets/img/cards/card_cover.png">
+        <img (click)="takeCard()" *ngIf="pickCardAnimation" class="pick_card" style="right: 25px"
+            src="../../assets/img/cards/2_of_clubs.png">
     </div>
 
 </div>
