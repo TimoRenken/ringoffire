@@ -11,19 +11,28 @@ import { Game } from '../../models/game';
 })
 export class GameComponent {
   pickCardAnimation = false;
-  game?: Game 
+  currentCard: string | undefined = '';
+  game?: Game
 
-  constructor() { 
+  constructor() {
     this.newGame();
   }
 
-  newGame(){
+  newGame() {
     this.game = new Game();
     console.log(this.game);
   }
 
-  takeCard(){
-    this.pickCardAnimation = true;
+  takeCard() {
+    if (!this.pickCardAnimation) {
+      this.currentCard = this.game?.stack.pop();
+      console.log(this.currentCard);
+      this.pickCardAnimation = true;
+
+      setTimeout(() => {
+        this.pickCardAnimation = false;
+      }, 1500)
+    }
   }
 
 }

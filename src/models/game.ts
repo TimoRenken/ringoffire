@@ -6,10 +6,10 @@ export class Game {
 
     constructor() {
         for (let i = 1; i < 14; i++) {
-            this.stack.push( i + '_of_clubs.png')
-            this.stack.push( i + '_of_diamonds.png')
-            this.stack.push( i + '_of_hearts.png')
-            this.stack.push( i + '_of_spades.png')
+            this.stack.push( i + '_of_clubs')
+            this.stack.push( i + '_of_diamonds')
+            this.stack.push( i + '_of_hearts')
+            this.stack.push( i + '_of_spades')
             shuffle(this.stack);
         }
     }
