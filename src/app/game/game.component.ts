@@ -9,29 +9,37 @@ import { Game } from '../../models/game';
   templateUrl: './game.component.html',
   styleUrl: './game.component.scss'
 })
+
 export class GameComponent {
-  pickCardAnimation = false;
+  pickCardAnimation: boolean = false;
   currentCard: string | undefined = '';
-  game?: Game
+  game: Game = new Game();
 
   constructor() {
     this.newGame();
   }
 
-  newGame() {
+  newGame(): void {
     this.game = new Game();
-    console.log(this.game);
   }
 
-  takeCard() {
+  takeCard(): void {
     if (!this.pickCardAnimation) {
-      this.currentCard = this.game?.stack.pop();
+      this.currentCard = this.game.stack.pop();
       console.log(this.currentCard);
       this.pickCardAnimation = true;
 
       setTimeout(() => {
+        if (this.currentCard != undefined) {
+          this.game.playedCards?.push(this.currentCard);
+          console.log('New card:' + this.currentCard);
+          console.log('Game is', this.game)
+
+        } else {
+          this.currentCard
+        }
         this.pickCardAnimation = false;
-      }, 1500)
+      }, 1000)
     }
   }
 
