@@ -32,7 +32,6 @@ export class GameComponent {
   takeCard(): void {
     if (!this.pickCardAnimation) {
       this.currentCard = this.game.stack.pop();
-      console.log(this.currentCard);
       this.pickCardAnimation = true;
 
       setTimeout(() => {

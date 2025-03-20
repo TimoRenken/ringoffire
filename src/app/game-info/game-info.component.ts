@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { SharedModule } from '../shared.module';
 
 @Component({
@@ -8,7 +8,7 @@ import { SharedModule } from '../shared.module';
   templateUrl: './game-info.component.html',
   styleUrl: './game-info.component.scss'
 })
-export class GameInfoComponent {
+export class GameInfoComponent implements OnChanges {
   cardAction = [
     { title: 'Waterfall', description: 'Everyone has to start drinking at the same time. As soon as player 1 stops drinking, player 2 may stop drinking. Player 3 may stop as soon as player 2 stops drinking, and so on.' },
     { title: 'You', description: 'You decide who drinks' },
@@ -25,11 +25,20 @@ export class GameInfoComponent {
     { title: 'Rule', description: 'Make a rule. Everyone needs to drink when he breaks the rule.' },
   ];
 
-  title:string = '';
-  description:string = ''
-  @Input() card:string | undefined = '';
+  title: string = '';
+  description: string = ''
+  @Input() card: string | undefined = '';
 
-  constructor(){
+  constructor() {
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
     console.log('current card is', this.card);
+    if (this.card) {
+      let cardNumber = +this.card?.split('_')[1];
+      this.title = this.cardAction[cardNumber - 1].title;
+      this.description = this.cardAction[cardNumber -1].description;
+    }
+
   }
 }
