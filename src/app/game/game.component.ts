@@ -34,12 +34,12 @@ export class GameComponent {
       this.currentCard = this.game.stack.pop();
       this.pickCardAnimation = true;
 
+      this.game.currentPlayer++;
+      this.game.currentPlayer = this.game.currentPlayer % this.game.players.length;
+
       setTimeout(() => {
         if (this.currentCard != undefined) {
           this.game.playedCards?.push(this.currentCard);
-          console.log('New card:' + this.currentCard);
-          console.log('Game is', this.game)
-
         } else {
           this.currentCard
         }
@@ -53,7 +53,7 @@ export class GameComponent {
 
     });
 
-    dialogRef.afterClosed().subscribe((name:string) => {
+    dialogRef.afterClosed().subscribe((name: string) => {
       this.game.players.push(name);
     });
   }
