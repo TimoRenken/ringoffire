@@ -15,7 +15,7 @@ export class Game {
     }
 }
 
-// code from stackoverflow , just for testing
+// codeblock from stackoverflow:
 
 function shuffle(array: any) {
     let currentIndex = array.length;

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { SharedModule } from '../shared.module';
 import { FormsModule } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
 
 
 @Component({
@@ -13,7 +14,11 @@ import { FormsModule } from '@angular/forms';
 export class DialogAddPlayerComponent {
   name:string = '';
 
-  onNoClick(){
+  constructor(public dialogRef: MatDialogRef<DialogAddPlayerComponent>){
     
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 }

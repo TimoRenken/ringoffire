@@ -54,7 +54,10 @@ export class GameComponent {
     });
 
     dialogRef.afterClosed().subscribe((name: string) => {
-      this.game.players.push(name);
+      if (name && name.length > 0) {
+        this.game.players.push(name);
+      }
+
     });
   }
 }
