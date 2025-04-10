@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Game } from '../../models/game';
 import { PlayerComponent } from '../player/player.component';
 import { MatIconModule } from '@angular/material/icon';
@@ -7,6 +7,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
 import { GameInfoComponent } from "../game-info/game-info.component";
+import { gameDataService} from '../firebase-service/game-data.service';
+
 
 @Component({
   selector: 'app-game',
@@ -20,13 +22,15 @@ export class GameComponent {
   pickCardAnimation: boolean = false;
   currentCard: string | undefined = '';
   game: Game = new Game();
+ 
 
-  constructor(public dialog: MatDialog) {
+  constructor(public gameData: gameDataService, public dialog: MatDialog) {
     this.newGame();
   }
 
   newGame(): void {
     this.game = new Game();
+    this.gameData.addGame(this.game.toJson())
   }
 
   takeCard(): void {
@@ -57,7 +61,6 @@ export class GameComponent {
       if (name && name.length > 0) {
         this.game.players.push(name);
       }
-
     });
   }
 }
