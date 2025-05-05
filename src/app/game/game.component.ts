@@ -7,8 +7,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
 import { GameInfoComponent } from "../game-info/game-info.component";
-import { gameDataService} from '../firebase-service/game-data.service';
-
+import { gameDataService } from '../firebase-service/game-data.service';
+import { ActivatedRoute } from '@angular/router';
+import { Firestore, collectionData, collection, doc, onSnapshot, addDoc, updateDoc } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-game',
@@ -19,35 +20,50 @@ import { gameDataService} from '../firebase-service/game-data.service';
 })
 
 export class GameComponent {
-  pickCardAnimation: boolean = false;
-  currentCard: string | undefined = '';
   game: Game = new Game();
- 
 
-  constructor(public gameData: gameDataService, public dialog: MatDialog) {
-    this.newGame();
+
+  constructor(private route: ActivatedRoute, public gameData: gameDataService, public dialog: MatDialog) {
+    // this.newGame();
+    this.route.params.subscribe(params => {
+      const gameId = params.id;
+      if (gameId) {
+        this.loadGame(gameId);
+      }
+    });
+  }
+
+  loadGame(gameId: string) {
+    const docRef = this.gameData.getSingleDocRef('games', gameId);
+    onSnapshot(docRef, (snapshot) => {
+      const data = snapshot.data();
+      if (data) {
+        this.game = Game.fromJson(data, snapshot.id);
+      }
+    });
   }
 
   newGame(): void {
     this.game = new Game();
-    this.gameData.addGame(this.game.toJson())
   }
 
   takeCard(): void {
-    if (!this.pickCardAnimation) {
-      this.currentCard = this.game.stack.pop();
-      this.pickCardAnimation = true;
-
+    if (!this.game.pickCardAnimation) {
+      this.game.currentCard = this.game.stack.pop();
+      this.game.pickCardAnimation = true;
       this.game.currentPlayer++;
       this.game.currentPlayer = this.game.currentPlayer % this.game.players.length;
+      console.log(this.game)
+      this.gameData.updateGame(this.game);
 
       setTimeout(() => {
-        if (this.currentCard != undefined) {
-          this.game.playedCards?.push(this.currentCard);
+        if (this.game.currentCard != undefined) {
+          this.game.playedCards?.push(this.game.currentCard);
         } else {
-          this.currentCard
+          this.game.currentCard
         }
-        this.pickCardAnimation = false;
+        this.game.pickCardAnimation = false;
+        this.gameData.updateGame(this.game);
       }, 1000)
     }
   }
@@ -60,6 +76,8 @@ export class GameComponent {
     dialogRef.afterClosed().subscribe((name: string) => {
       if (name && name.length > 0) {
         this.game.players.push(name);
+        console.log('Aktuelles Spiel:', this.game);
+        this.gameData.updateGame(this.game);
       }
     });
   }
