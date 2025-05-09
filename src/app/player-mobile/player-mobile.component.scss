@@ -1,20 +1,21 @@
 .player{
     display: flex;
     align-items: center;
+    justify-content: space-around;
     font-size: 16px;
     background-color: rgb(179, 178, 177);
-    width: 300px;
-    border-radius: 50px 0 0 50px;
+    width: 128px;
+    border-radius: 0 50px 50px 0;
     z-index: 1;
     position: relative;
     span{
-        font-size: 32px;
+        font-size: 16px;
         margin-left: 16px;
     }
 
     img{
-        height: 70px;
-        width: 70px;
+        height: 40px;
+        width: 40px;
         object-fit: contain;
         border-radius: 100%;
     }

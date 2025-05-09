@@ -10,11 +10,12 @@ import { GameInfoComponent } from "../game-info/game-info.component";
 import { gameDataService } from '../firebase-service/game-data.service';
 import { ActivatedRoute } from '@angular/router';
 import { Firestore, collectionData, collection, doc, onSnapshot, addDoc, updateDoc } from '@angular/fire/firestore';
+import { PlayerMobileComponent } from '../player-mobile/player-mobile.component';
 
 @Component({
   selector: 'app-game',
   standalone: true,
-  imports: [CommonModule, PlayerComponent, MatIconModule, MatButtonModule, GameInfoComponent],
+  imports: [CommonModule, PlayerComponent, PlayerMobileComponent, MatIconModule, MatButtonModule, GameInfoComponent],
   templateUrl: './game.component.html',
   styleUrl: './game.component.scss'
 })
@@ -24,7 +25,6 @@ export class GameComponent {
 
 
   constructor(private route: ActivatedRoute, public gameData: gameDataService, public dialog: MatDialog) {
-    // this.newGame();
     this.route.params.subscribe(params => {
       const gameId = params.id;
       if (gameId) {
